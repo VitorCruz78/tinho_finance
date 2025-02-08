@@ -1,12 +1,7 @@
-import { Text } from "@/components/text";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Home() {
   return (
-    <div>
-      <Text
-        value="Eaí, bora começar o devocional de hoje?"
-        type="h1"
-      />
-    </div>
+    <ThemeToggle />
   )
 }

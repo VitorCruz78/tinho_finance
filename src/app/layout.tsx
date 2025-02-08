@@ -1,28 +1,31 @@
-import { Sidebar } from "@/components/sidebar/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
-import { Jost } from "next/font/google";
 import "./globals.css";
 
-const robotoCondensed = Jost({
-  subsets: ["latin"],
-  weight: ['500', '600']
-})
-
 export const metadata: Metadata = {
-  title: "MyDevotional",
-  description: "Home",
+  title: "Tinho Finance"
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-br" translate="no">
+    <html lang="pt-br" translate="no" suppressHydrationWarning>
       <body
-        className={`min-w-screen min-h-screen flex flex-row items-start justify-start bg-primaryColor ${robotoCondensed.className} antialiased`}
+        className={`min-w-screen min-h-screen`}
       >
-        <Sidebar />
-        <div className="py-12 px-12 sm:px-24">
-          {children}
-        </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarTrigger />
+            {children}
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
