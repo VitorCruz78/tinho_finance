@@ -1,5 +1,5 @@
 import {
-  Sidebar,
+  Sidebar as SidebarComponent,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
@@ -8,12 +8,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { sidebarItems } from "@/utils/sidebar-items"
+import { sidebarItems } from "@/utils/app/sidebar-items"
 
 
-export function AppSidebar() {
+export function Sidebar() {
   return (
-    <Sidebar>
+    <SidebarComponent>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Logo</SidebarGroupLabel>
@@ -33,6 +33,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-    </Sidebar>
+    </SidebarComponent>
   )
 }

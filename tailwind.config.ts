@@ -65,7 +65,10 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+      borderColor: {
+        default: 'rgb(209 213 219 / 0.5)'
+      }
   	}
   },
   plugins: [require("tailwindcss-animate")],
