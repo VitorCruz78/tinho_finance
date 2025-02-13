@@ -1,8 +1,4 @@
-import { AccountBalance } from "@/components/app/account-balance";
-import { Sidebar } from "@/components/app/sidebar";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
@@ -28,15 +24,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <Sidebar />
-            <SidebarTrigger />
-            <AccountBalance />
-            <ThemeToggle />
-            <div className="w-screen min-h-screen pt-16">
-              {children}
-            </div>
-          </SidebarProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>
