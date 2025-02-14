@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const roboto = Roboto({
   subsets: ['latin'],
   weight: '300',
 })
@@ -16,7 +16,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="pt-br" translate="no" suppressHydrationWarning>
       <body
-        className={`${dmSans.className} min-w-screen min-h-screen`}
+        className={`${roboto.className} min-w-screen min-h-screen`}
       >
         <ThemeProvider
           attribute="class"
