@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 const publicRoutes = [
@@ -6,10 +7,13 @@ const publicRoutes = [
 ] as const
 const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = '/sign-in'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+  const getCookies = cookies()
+  const nextAuthSession = (await getCookies).get('next-auth.session-token')?.value || ''
+
   const path = request.nextUrl.pathname
   const publicRoute = publicRoutes.find(route => route.path === path)
-  const authToken = ''
+  const authToken = nextAuthSession
 
   if (!authToken && publicRoute) {
     return NextResponse.next()

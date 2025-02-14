@@ -1,1 +1,5 @@
 DATABASE_URL='postgresql://postgres.[URI]:[PASSWORD]@aws-0-sa-east-1.pooler.supabase.com:5432/postgres'
+AUTH_SECRET=''
+
+GOOGLE_CLIENT_ID=''
+GOOGLE_CLIENT_SECRET=''

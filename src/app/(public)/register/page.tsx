@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -76,6 +77,7 @@ export default function Register() {
           <span className="w-1/3">Ou continue com</span>
           <hr className="w-1/3"></hr>
         </div>
+        <Button onClick={() => signIn('google')} className="w-1/2">Google</Button>
       </div>
     </div>
   )
