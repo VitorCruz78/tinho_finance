@@ -1,4 +1,3 @@
-import { SessionsRepository } from "@/repositories/SessionsRepository"
 import { UsersRepository } from "@/repositories/UsersRepository"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
@@ -7,11 +6,9 @@ import { cookies } from "next/headers"
 
 export class CreateUser {
   public usersRepository: UsersRepository
-  public sessionsRepository: SessionsRepository
 
   constructor() {
     this.usersRepository = new UsersRepository()
-    this.sessionsRepository = new SessionsRepository()
   }
 
   async create(data: ICreateUser, provider: 'google' | 'app') {
@@ -34,27 +31,17 @@ export class CreateUser {
         password: passwordHash,
       }, String(process.env.AUTH_JWT_SECRET_KEY))
 
-      const createdUser = await this.usersRepository.create({
+      await this.usersRepository.create({
         ...data,
         password: passwordHash,
-      })
-      await this.sessionsRepository.create({
-        user_id: createdUser?.id,
-        token: generateToken,
-        expires_in: moment().add(7, 'days').toDate(),
       })
 
       cookiesStorage.set('auth_token', String(generateToken))
     }
 
     if (provider === 'google') {
-      const createdUser = await this.usersRepository.create({
+      await this.usersRepository.create({
         ...data,
-      })
-      await this.sessionsRepository.create({
-        user_id: createdUser?.id,
-        token: String(data.token),
-        expires_in: moment().add(7, 'days').toDate(),
       })
 
       cookiesStorage.set('auth_token', String(data.token))
