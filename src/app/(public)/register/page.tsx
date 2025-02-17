@@ -10,6 +10,7 @@ import {
   FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import api from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -17,11 +18,14 @@ import { z } from "zod";
 
 const formSchema = z.object({
   username: z.string().min(2, {
-    message: "Necessário no mínimo 2 letras para nome de usuário."
+    message: "O nome de usuário deve conter no mínimo 2 dígitos."
   }),
   email: z.string().email({
     message: "E-mail inválido."
   }),
+  password: z.string().min(4, {
+    message: "A senha deve conter no mínimo 4 dígitos."
+  })
 })
 
 export default function Register() {
@@ -30,11 +34,20 @@ export default function Register() {
     defaultValues: {
       username: "",
       email: "",
-    }
+      password: "",
+    },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    try {
+      await api.post('/api/v1/user/register', {
+        name: values?.username,
+        email: values?.email,
+        password: values?.password,
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -50,7 +63,7 @@ export default function Register() {
                 <FormItem className="w-72 sm:w-96">
                   <FormLabel>Seu nome</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: John Doe" {...field} />
+                    <Input placeholder="Ex: John Doe" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -63,7 +76,20 @@ export default function Register() {
                 <FormItem className="w-72 sm:w-96">
                   <FormLabel>Seu email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: nome@exemplo.com" {...field} />
+                    <Input placeholder="Ex: nome@exemplo.com" type="email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="w-72 sm:w-96">
+                  <FormLabel>Sua senha</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Digite sua senha" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

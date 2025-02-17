@@ -8,10 +8,27 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
+  id         Int        @id @default(autoincrement())
+  name       String     @db.VarChar(55)
+  email      String     @unique @db.VarChar(155)
+  password   String?    @db.VarChar(155)
+  balance    Decimal    @default(0) @db.Decimal(18, 2)
+  active     Boolean    @default(true)
+  created_at DateTime   @default(now())
+  Sessions   Sessions[]
 
   @@map("user")
+}
+
+model Sessions {
+  id         String   @id @default(uuid())
+  user_id    Int
+  active     Boolean  @default(true)
+  token      String
+  expires_in DateTime
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("sessions")
 }
