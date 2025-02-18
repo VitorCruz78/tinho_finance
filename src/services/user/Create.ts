@@ -1,7 +1,6 @@
 import { UsersRepository } from "@/repositories/UsersRepository"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import moment from "moment"
 import { cookies } from "next/headers"
 
 export class CreateUser {
@@ -40,8 +39,10 @@ export class CreateUser {
     }
 
     if (provider === 'google') {
+      const { token, ...rest } = data
+
       await this.usersRepository.create({
-        ...data,
+        ...rest,
       })
 
       cookiesStorage.set('auth_token', String(data.token))

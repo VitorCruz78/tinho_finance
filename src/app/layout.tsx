@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

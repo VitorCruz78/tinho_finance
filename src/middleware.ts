@@ -1,6 +1,6 @@
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import api from "./lib/axios";
 
 const publicRoutes = [
   { path: '/sign-in', whenAuthenticated: 'redirect' },
@@ -10,24 +10,21 @@ const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = '/sign-in'
 
 async function validExpiresToken() {
   const getCookies = cookies()
-  const nextAuthSession = (await getCookies).get('auth_token')?.value || ''
-  const token = nextAuthSession?.split('Bearer ')[1]
+  const token = (await getCookies).get('auth_token')?.value || ''
 
   try {
     if (!!token) {
-      const resValidToken: { expired: boolean, token: string } = (await api.get('/api/auth/validToken', {
-        headers: {
-          Authorization: token
-        }
-      })).data?.data
+      const decodeToken = jwt.decode(token) as JwtPayload
+      const currentTime = Math.floor(Date.now() / 1000)
 
-      return {
-        expired: resValidToken?.expired,
-        token: resValidToken?.token,
+      if (decodeToken.exp! < currentTime) {
+        return false
+      } else {
+        return true
       }
     }
 
-    return
+    return false
   } catch (error) {
     console.log(error)
   }
@@ -38,7 +35,7 @@ export async function middleware(request: NextRequest) {
   const publicRoute = publicRoutes.find(route => route.path === path)
 
   const tokenIsValid = await validExpiresToken()
-  const authToken = tokenIsValid?.expired ? '' : tokenIsValid?.token
+  const authToken = tokenIsValid
 
   if (!authToken && publicRoute) {
     return NextResponse.next()
