@@ -1,6 +1,5 @@
 "use client";
 
-import { Loader } from "@/components/app/loader";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import api from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -63,7 +63,6 @@ export default function Register() {
       toast({
         variant: "default",
         title: "Conta criada com sucesso",
-        description: "Seja bem-vindo :)",
         duration: 5000,
       })
       return router.push('/')
@@ -77,15 +76,17 @@ export default function Register() {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center">
+      <div className="absolute top-2 right-2">
+        <Link href={'/sign-in'} className="text-sm text-blue-500 underline hover:opacity-90">Login</Link>
+      </div>
       <div className="flex flex-col items-center justify-center gap-6">
-        <h1 className="text-4xl font-bold">Crie sua conta</h1>
         {
           loading ?
             <div className="w-full flex flex-col items-center justify-center gap-6">
-              <p className="text-xl animate-pulse">Criando sua conta...</p>
-              <Loader loading={loading} />
+              <p className="text-2xl animate-pulse">Criando sua conta...</p>
             </div> :
             <>
+              <h1 className="text-4xl font-bold">Crie sua conta</h1>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col items-center justify-center">
                   <FormField
