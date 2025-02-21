@@ -76,8 +76,8 @@ export default function SignIn() {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center">
-      <div className="absolute top-2 right-2">
-        <Link href={'/register'} className="text-sm text-blue-500 underline hover:opacity-90">Não tem uma conta?</Link>
+      <div className="absolute top-6 right-6">
+        <Link href={'/register'} className="text-sm underline hover:opacity-90">Não tem uma conta?</Link>
       </div>
       <div className="flex flex-col items-center justify-center gap-6">
         {

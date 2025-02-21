@@ -76,8 +76,8 @@ export default function Register() {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center">
-      <div className="absolute top-2 right-2">
-        <Link href={'/sign-in'} className="text-sm text-blue-500 underline hover:opacity-90">Login</Link>
+      <div className="absolute top-6 right-6">
+        <Link href={'/sign-in'} className="text-sm underline hover:opacity-90">Login</Link>
       </div>
       <div className="flex flex-col items-center justify-center gap-6">
         {
