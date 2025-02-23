@@ -1,8 +1,7 @@
-import { CreateUser } from "@/services/user/Create"
+import { Register } from "@/services/user/Register"
 import { NextAuthOptions } from "next-auth"
 import NextAuth from "next-auth/next"
 import GoogleProvider from "next-auth/providers/google"
-import { cookies } from "next/headers"
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -14,8 +13,8 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ user, account }) {
       if (user && account) {
-        const createUser = new CreateUser()
-        await createUser.create({
+        const register = new Register()
+        await register.create({
           name: String(user.name),
           email: String(user.email),
           token: String(account.id_token),

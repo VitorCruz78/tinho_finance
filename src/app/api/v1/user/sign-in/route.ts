@@ -1,19 +1,17 @@
-import { Register } from "@/services/user/Register";
+import { SignIn } from "@/services/user/SignIn";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   const {
-    name,
     email,
     password,
   } = await req.json()
 
-  const register = new Register()
-  const data = await register.create({
-    name,
+  const signIn = new SignIn()
+  const data = await signIn.signIn({
     email,
     password,
-  }, 'app')
+  }, "app")
 
   return Response.json({
     status: 201,
