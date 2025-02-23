@@ -12,7 +12,6 @@ export class SignIn {
 
   async signIn(data: ISignIn, provider: 'google' | 'app') {
     const cookiesStorage = await cookies()
-    let token = ''
 
     const usersExists = await this.usersRepository.findByEmail(data?.email)
     if (!usersExists) {
@@ -20,31 +19,27 @@ export class SignIn {
     }
 
     if (provider === 'app') {
-      const comparePassword = bcrypt.compareSync(data?.password!, usersExists?.password!)
+      const comparePassword = await bcrypt.compare(data?.password!, usersExists?.password!)
       if (!comparePassword) {
         throw new Error('Credenciais inválidas.')
       }
-
-      token = jwt.sign({
-        name: usersExists?.name,
-        email: usersExists?.email,
-        password: usersExists?.password,
-      }, String(process.env.AUTH_JWT_SECRET_KEY))
     }
 
-    if (provider === 'google') {
-      token = jwt.sign({
-        name: usersExists?.name,
-        email: usersExists?.email,
-      }, String(process.env.AUTH_JWT_SECRET_KEY))
-    }
-
-
+    const token = this.generateToken(usersExists)
     cookiesStorage.set('auth_token', String(token))
+
     return {
       ...usersExists,
       token,
     }
+  }
+
+  private generateToken(user: { id: number, name: string, email: string }) {
+    return jwt.sign({
+      id: user?.id,
+      name: user?.name,
+      email: user?.email,
+    }, String(process.env.AUTH_JWT_SECRET_KEY), { expiresIn: '7d' })
   }
 }
 
