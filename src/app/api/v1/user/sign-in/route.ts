@@ -1,8 +1,6 @@
-import { BaseErrors } from "@/errors/BaseErrors";
-import { errorHandler } from "@/errors/errorHandler";
+import { BadRequest, IBadRequestError } from "@/errors/BadRequest";
 import { SignIn } from "@/services/user/SignIn";
-import { NextApiResponse } from "next";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const signInSchema = z.object({
@@ -10,7 +8,7 @@ const signInSchema = z.object({
   password: z.string().min(6),
 })
 
-export async function POST(req: NextRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest) {
   try {
     signInSchema.parse(await req.json())
 
@@ -25,18 +23,21 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
       password,
     }, "app")
 
-    return res.status(201).json({
+    return NextResponse.json({
       message: 'Success',
       data,
-    })
+    }, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
-        error: "Valide os campos informados.",
-        details: error.errors,
-      })
+      return NextResponse.json({
+        message: 'Erro de validação',
+        details: BadRequest(error.errors as IBadRequestError[]),
+      }, { status: 400 })
     }
 
-    return errorHandler(res, error)
+    return NextResponse.json({
+      message: 'Erro interno.',
+      details: "Um erro interno não esperado ocorreu.",
+    }, { status: 500 })
   }
 }
